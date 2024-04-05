@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:plant_tracker/routing/route_state.dart';
 
 class TopBarContents extends StatefulWidget {
   final double opacity;
@@ -24,6 +25,7 @@ class _TopBarContentsState extends State<TopBarContents> {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
+    // final routeState = RouteStateScope.of(context);
 
     return Container(
       color: Color.fromARGB(255, 228, 229, 230).withOpacity(widget.opacity),
@@ -56,7 +58,11 @@ class _TopBarContentsState extends State<TopBarContents> {
                         value ? _isHovering[0] = true : _isHovering[0] = false;
                       });
                     },
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context); // Close the drawer
+                      // routeState.go('/home');
+                      Navigator.pushNamed(context, '/home');
+                    },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -91,14 +97,18 @@ class _TopBarContentsState extends State<TopBarContents> {
                         value ? _isHovering[1] = true : _isHovering[1] = false;
                       });
                     },
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context); // Close the drawer
+                      // routeState.go('/home');
+                      Navigator.pushNamed(context, '/add_plant');
+                    },
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'My Plants',
+                          'Add Plant',
                           style: TextStyle(
-                              color: _isHovering[0]
+                              color: _isHovering[1]
                                   ? Color(0xFF077bd7)
                                   : Color(0xFF077bd7),
                               fontWeight: FontWeight.bold,
@@ -110,6 +120,45 @@ class _TopBarContentsState extends State<TopBarContents> {
                           maintainState: true,
                           maintainSize: true,
                           visible: _isHovering[1],
+                          child: Container(
+                            height: 2,
+                            width: 20,
+                            color: Colors.blue,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: screenSize.width / 15),
+                  InkWell(
+                    onHover: (value) {
+                      setState(() {
+                        value ? _isHovering[2] = true : _isHovering[2] = false;
+                      });
+                    },
+                    onTap: () {
+                      Navigator.pop(context); // Close the drawer
+                      // routeState.go('/my_plants');
+                      Navigator.pushNamed(context, '/my_plants');
+                    },
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'My Plants',
+                          style: TextStyle(
+                              color: _isHovering[2]
+                                  ? Color(0xFF077bd7)
+                                  : Color(0xFF077bd7),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
+                        ),
+                        SizedBox(height: 5),
+                        Visibility(
+                          maintainAnimation: true,
+                          maintainState: true,
+                          maintainSize: true,
+                          visible: _isHovering[2],
                           child: Container(
                               height: 2, width: 20, color: Colors.blue),
                         )
