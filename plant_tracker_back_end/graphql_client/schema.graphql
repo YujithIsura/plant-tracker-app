@@ -1,0 +1,61 @@
+type CategoryData {
+  category_id: Int
+  category_name: String
+  description: String
+}
+
+type Mutation {
+  create_plant(plant: Plant!): PlantData
+}
+
+type PersonData {
+  id: Int
+  full_name: String
+  created: String
+  updated: String
+  asgardeo_id: String
+  jwt_sub_id: String
+  jwt_email: String
+  digital_id: String
+  email: String
+}
+
+input Plant {
+  record_type: String = ""
+  plant_id: Int
+  common_name: String
+  scientific_name: String
+  family: String
+  description: String
+  care_instructions: String
+  photo_url: String
+  origin: String
+  lighting_condition: String
+  substrate: String
+  growing_speed: String
+  category_id: Int
+  date_added: String
+}
+
+type PlantData {
+  plant_id: Int
+  common_name: String
+  scientific_name: String
+  family: String
+  description: String
+  care_instructions: String
+  photo_url: String
+  origin: String
+  lighting_condition: String
+  substrate: String
+  growing_speed: String
+  category: CategoryData
+  date_added: String
+}
+
+type Query {
+  person_by_digital_id(id: String): PersonData
+  plants: [PlantData!]!
+  plants_by_category(category_id: Int!): [PlantData!]
+}
+

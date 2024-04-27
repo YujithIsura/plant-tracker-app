@@ -1,0 +1,62 @@
+mutation addPlant($plant: Plant!) {
+    create_plant(plant:$plant) {
+        plant_id
+    }
+}
+
+query getPlantList {
+    plants {
+        plant_id
+        common_name
+        scientific_name
+        family
+        description
+        care_instructions
+        photo_url
+        origin
+        lighting_condition
+        substrate
+        growing_speed
+        category {
+            category_id
+            category_name
+            description
+        }
+    }
+}
+
+query getPlantByCategory($category_id: Int!) {
+    plants_by_category(category_id:$category_id) {
+        plant_id
+        common_name
+        scientific_name
+        family
+        description
+        care_instructions
+        photo_url
+        origin
+        lighting_condition
+        substrate
+        growing_speed
+        category {
+            category_id
+            category_name
+            description
+        }
+    }
+}
+
+query getPerson($id: String!) {
+    person_by_digital_id(id:$id) {
+        id
+        full_name
+        asgardeo_id
+        jwt_sub_id
+        jwt_email
+        digital_id
+        email
+        created
+        updated
+    }
+}
+   

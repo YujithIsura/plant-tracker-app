@@ -8,10 +8,9 @@ final campusAppsPortalInstance = CampusAppsPortal()
   ..setJWTSub('jwt-sub-id123')
   ..setDigitalId('digital-id123')
   ..setUserPerson(
-      Person(id: 2, jwt_sub_id: 'jwt-sub-id123', preferred_name: 'Nimal'));
+      Person(id: 2, jwt_sub_id: 'jwt-sub-id123'));
 
 final campusAppsPortalPersonMetaDataInstance = CampusAppsPortalPersonMetaData()
-  ..setGroups(['educator', 'teacher'])
   ..setScopes('address email');
 
 class CampusAppsPortal {
@@ -184,42 +183,6 @@ class CampusAppsPortal {
         print('Campus Apps Portal - fetchPersonForUser: ' +
             person.toJson().toString());
         campusAppsPortalInstance.setUserPerson(person);
-
-        if (person.digital_id != null) {
-          this.isStudent = campusAppsPortalPersonMetaDataInstance
-              .getGroups()
-              .contains('Student');
-          this.isParent = campusAppsPortalPersonMetaDataInstance
-              .getGroups()
-              .contains('Parent');
-          this.isSecurity = campusAppsPortalPersonMetaDataInstance
-              .getGroups()
-              .contains('Security');
-          this.isJanitor = campusAppsPortalPersonMetaDataInstance
-              .getGroups()
-              .contains('Janitor');
-          this.isTeacher = campusAppsPortalPersonMetaDataInstance
-              .getGroups()
-              .contains('Educator');
-          this.isFoundation = campusAppsPortalPersonMetaDataInstance
-              .getGroups()
-              .contains('Foundation');
-          if (this.isSecurity ||
-              this.isTeacher ||
-              this.isFoundation ||
-              this.isStudent) {
-            this.isGroupFetched = true;
-          }
-
-          // if(isStudent){
-          //   DutyParticipant? dutyParticipant =  await fetchDutyParticipant(person.id!);
-
-          //   if( dutyParticipant !=null &&  (dutyParticipant.role == 'leader' || dutyParticipant.role == 'assistant-leader' )){
-          //         campusAppsPortalInstance.setLeaderParticipant(dutyParticipant);
-          //   }
-
-          // }
-        }
       }
     } catch (e) {
       print(
@@ -238,16 +201,7 @@ class CampusAppsPortal {
 }
 
 class CampusAppsPortalPersonMetaData {
-  List<dynamic> _groups = [];
   String? _scopes;
-
-  void setGroups(List<dynamic> groups) {
-    _groups = groups;
-  }
-
-  List<dynamic> getGroups() {
-    return this._groups;
-  }
 
   void setScopes(String scopes) {
     _scopes = scopes;

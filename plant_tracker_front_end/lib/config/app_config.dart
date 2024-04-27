@@ -4,26 +4,18 @@ import 'package:flutter/services.dart';
 
 class AppConfig {
   static String apiUrl = '';
-  static String campusAttendanceBffApiUrl = '';
-  static String campusProfileBffApiUrl = '';
-  static String campusBffApiKey = '';
+  static String plantTrackerBffApiUrl = '';
+  static String BffApiKey = '';
   static String refreshToken = '';
   static String choreoSTSEndpoint = "";
-  static String choreoSTSClientID = "x23_1tY7kAUtLUH9il9I3YwyrJca";
-  // static String choreoSTSClientID = "Krjx9Wr0F5eKDYAJQOSVX5rz2aoa";
+  static String choreoSTSClientID = "Tpq3gnE66p7y1KRqffYi2GDr0Loa";
+  static String asgardeoClientId = "ItvJE7jy6eWuGKfosqX08vhpTdAa";
   static String asgardeoTokenEndpoint = "";
-  static String asgardeoClientId = "pJ2gM2o6yXN4f60FypEYWWERrAoa";
-  //static String asgardeoClientId = "6diD3fVU6KfYeokr3BZGoGPioCUa";
   static var apiTokens = null;
-  static String applicationName = 'Avinya Campus Apps';
+  static String applicationName = 'Plant Tracker';
   static String applicationVersion = '1.0.0';
-  static String mainCampusActivity = 'school-day';
-  static String campusPctiNotesBffApiUrl = '';
-  static String campusAssetsBffApiUrl = '';
-  static String campusPctiFeedbackBffApiUrl = '';
   static String asgardeoLogoutUrl = '';
 
-  //AppConfig({required this.apiUrl});
 
   static Future<AppConfig> forEnvironment(String env) async {
     // load the json file
@@ -38,12 +30,7 @@ class AppConfig {
 
     // decode our json
     final json = jsonDecode(contents);
-    campusAttendanceBffApiUrl = json['campusAttendanceBffApiUrl'];
-    campusProfileBffApiUrl = json['campusProfileBffApiUrl'];
-    campusPctiNotesBffApiUrl = json['campusPctiNotesBffApiUrl'];
-    campusPctiNotesBffApiUrl = json['campusPctiNotesBffApiUrl'];
-    campusPctiFeedbackBffApiUrl = json['campusPctiFeedbackBffApiUrl'];
-    campusAssetsBffApiUrl = json['campusAssetsBffApiUrl'];
+    plantTrackerBffApiUrl = json['plantTrackerBffApiUrl'];
     choreoSTSEndpoint = json['choreo_sts_endpoint'];
     asgardeoTokenEndpoint = json['asgardeo_token_endpoint'];
     asgardeoLogoutUrl = json['logout_url'];

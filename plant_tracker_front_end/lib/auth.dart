@@ -42,8 +42,8 @@ class CampusAppsPortalAuth extends ChangeNotifier {
         campusAppsPortalInstance.setJWTSub(decodedAccessToken["sub"]);
         campusAppsPortalInstance.setJWTEmail(decodedAccessToken["email"]);
         campusAppsPortalInstance.setDigitalId(decodedAccessToken["email"]);
-        campusAppsPortalPersonMetaDataInstance
-            .setGroups(decodedAccessToken["groups"] as List<dynamic>);
+        // campusAppsPortalPersonMetaDataInstance
+        //     .setGroups(decodedAccessToken["groups"] as List<dynamic>);
         campusAppsPortalPersonMetaDataInstance
             .setScopes(decodedAccessToken["scope"] as String);
 
@@ -87,7 +87,7 @@ class CampusAppsPortalAuth extends ChangeNotifier {
           if (response.statusCode == 200) {
             var refreshedTokens = json.decode(response.body);
             AppConfig.apiTokens = refreshedTokens;
-            AppConfig.campusBffApiKey = refreshedTokens["access_token"];
+            AppConfig.BffApiKey = refreshedTokens["access_token"];
             AppConfig.refreshToken = refreshedTokens["refresh_token"];
             print('Access token refreshed successfully');
           } else {
@@ -129,7 +129,7 @@ class CampusAppsPortalAuth extends ChangeNotifier {
             _api_tokens
               ..forEach((key, value) =>
                   print("API tokens Key : $key, Value : $value"));
-            AppConfig.campusBffApiKey = _api_tokens["access_token"];
+            AppConfig.BffApiKey = _api_tokens["access_token"];
             AppConfig.refreshToken = _api_tokens["refresh_token"];
             print('Fetch API tokens success');
           } else {
