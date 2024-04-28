@@ -1,0 +1,8 @@
+{
+    "plantTrackerBffApiUrl" : "http://localhost:9095",
+    "choreo_sts_endpoint" : "https://api.asgardeo.io/t/planttracker/oauth2/token",
+    "asgardeo_token_endpoint" : "https://api.asgardeo.io/t/planttracker/oauth2/token",
+    "logout_url" : "https://api.asgardeo.io/t/planttracker/oidc/logout"
+}
+
+
