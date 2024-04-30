@@ -1,8 +1,6 @@
 {
-    "plantTrackerBffApiUrl" : "https://d2525cf5-d9cf-4c50-99b1-3bd6032cc14c-prod.e1-us-cdp-2.choreoapis.dev/plant-tracker-bffs/planttrackerbff/endpoint-9095-20c/v1.0",
+    "plantTrackerBffApiUrl" : "https://d2525cf5-d9cf-4c50-99b1-3bd6032cc14c-prod.e1-us-cdp-2.choreoapis.dev/plant-tracker-bffs/planttrackerbff/endpoint-9095-20c/v1",
     "choreo_sts_endpoint" : "https://api.asgardeo.io/t/planttracker/oauth2/token",
     "asgardeo_token_endpoint" : "https://api.asgardeo.io/t/planttracker/oauth2/token",
-    "logout_url" : "https://api.asgardeo.io/t/avinyaacademy/oidc/logout"
+    "logout_url" : "https://api.asgardeo.io/t/planttracker/oidc/logout"
 }
-
-
