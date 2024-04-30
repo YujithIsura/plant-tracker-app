@@ -47,5 +47,9 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/images/tropical_plants/
+    - assets/images/aquatic_plants/
+    - assets/images/epified_plants/
+    - assets/images/moss/
     - assets/config/dev.json
     - assets/config/prod.json

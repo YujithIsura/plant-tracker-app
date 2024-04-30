@@ -38,7 +38,7 @@ class CampusAppsPortalAuth extends ChangeNotifier {
         decodedAccessToken.forEach((key, value) =>
             print("access_token -- Key : $key, Value : $value"));
 
-        // capture token information to help map the sing in user to Avinya person
+        // capture token information to help map the sing in user to person
         campusAppsPortalInstance.setJWTSub(decodedAccessToken["sub"]);
         campusAppsPortalInstance.setJWTEmail(decodedAccessToken["email"]);
         campusAppsPortalInstance.setDigitalId(decodedAccessToken["email"]);
@@ -118,7 +118,7 @@ class CampusAppsPortalAuth extends ChangeNotifier {
               "client_id": AppConfig.choreoSTSClientID,
               "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
               "grant_type": "urn:ietf:params:oauth:grant-type:token-exchange",
-              "subject_token": _openid_tokens["id_token"],
+              "subject_token": _openid_tokens["access_token"],
             },
           );
           if (response.statusCode == 200) {

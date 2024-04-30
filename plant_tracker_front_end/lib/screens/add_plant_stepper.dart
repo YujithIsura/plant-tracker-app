@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:plant_tracker/widgets/bottom_bar.dart';
 import 'package:plant_tracker/widgets/carousel.dart';
 import 'package:plant_tracker/widgets/featured_heading.dart';
@@ -7,6 +11,10 @@ import 'package:plant_tracker/widgets/main_heading.dart';
 import 'package:plant_tracker/widgets/menu_drawer.dart';
 import 'package:plant_tracker/widgets/top_bar_contents.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:plant_tracker/data/plant_tracker.dart';
+
+
 
 class AddPlantPage extends StatefulWidget {
   @override
@@ -17,6 +25,24 @@ class _AddPlantPageState extends State<AddPlantPage> {
   final ScrollController _scrollController = ScrollController();
   double _scrollPosition = 0;
   double _opacity = 0;
+  String _imagePath = '';
+
+  File? _image;
+  final picker = ImagePicker();
+  Uint8List webImage = Uint8List(8);
+  // Initial Selected Value 
+  
+  // List of items in our dropdown menu 
+   final Map<int, String> dropdownItems = {
+    3: 'TROPICAL PLANTS',
+    4: 'MOSS',
+    5: 'AQUATIC PLANTS',
+    6: 'EPIFIED PLANTS',
+    // Add more key-value pairs as needed
+  };
+
+  int? _dropdownvalue = 3; 
+
 
   _scrollListener() {
     setState(() {
@@ -28,6 +54,72 @@ class _AddPlantPageState extends State<AddPlantPage> {
   void initState() {
     _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  Future<void> getImage() async {
+
+    if(!kIsWeb){
+
+      final ImagePicker imagePicker = ImagePicker();
+      XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+
+      if (pickedImage != null) {
+        _image = File(pickedImage.path);
+        setState(() {
+           _imagePath = _image!.path;
+        });
+      } else {
+        print('No image selected.');
+      }
+
+    }else if(kIsWeb){
+      final ImagePicker imagePicker = ImagePicker();
+      XFile? pickedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+
+      if (pickedImage != null) {
+       var f = await pickedImage.readAsBytes();
+       setState(() {
+         webImage = f;
+          _image = File(pickedImage.path);
+          _imagePath =_image!.path;
+       });
+      } else {
+        print('No image selected.');
+      }
+    }
+    
+  }
+  void _savePlant() async{
+    // Here you can implement the logic to save the plant data to the database
+    // For demonstration purposes, we'll simply print the plant data
+    print('Common Name: $_commonName');
+    print('Scientific Name: $_scientificName');
+    print('Family: $_family');
+    print('Description: $_description');
+    //print('Care Instructions: $_careInstructions');
+    print('Origin: $_origin');
+    print('Lighting Condition: $_lightingCondition');
+    print('Substrate: $_substrate');
+    print('Growing Speed: $_growingSpeed');
+    print('Image path: $_imagePath');
+    // After saving, you can navigate back to the previous screen or any other screen
+    final newPlantTracker = PlantTracker(
+                              common_name: _commonName,
+                              scientific_name: _scientificName,
+                              family: _family,
+                              description: _description,
+                              //care_instructions: _careInstructions,
+                              photo_url: _imagePath,
+                              origin: _origin,
+                              lighting_condition: _lightingCondition,
+                              substrate: _substrate,
+                              growing_speed: _growingSpeed,
+                              category_id: _dropdownvalue,
+                            );
+
+    final createdTodoResponse = await createPlant(newPlantTracker);
+
+    Navigator.pop(context);
   }
 
   int currentStep = 0;
@@ -109,6 +201,7 @@ class _AddPlantPageState extends State<AddPlantPage> {
                     if (isLastStep) {
                       setState(() => isCompleted = true);
                       print('Completed');
+                      _savePlant();
 
                       /// send data to server
                     } else {
@@ -174,10 +267,16 @@ class _AddPlantPageState extends State<AddPlantPage> {
                     child: ClipRRect(
                       borderRadius:
                           BorderRadius.circular(10), // Rounded corners
-                      child: Image(
-                        image: AssetImage('assets/images/background.png'),
-                        fit: BoxFit.cover, // Adjust the fit as needed
-                      ),
+                      child: _image == null
+                      ?
+                      TextButton.icon(
+                        onPressed: getImage, 
+                        icon: const Icon(Icons.camera), 
+                        label: const Text('Select Picture'),
+                      )
+                      : kIsWeb?
+                         Image.memory(webImage,fit: BoxFit.fill):
+                         Image.file(_image!,fit: BoxFit.fill,),
                     ),
                   ),
                   Positioned(
@@ -200,6 +299,27 @@ class _AddPlantPageState extends State<AddPlantPage> {
                 ],
               ),
               const SizedBox(height: 12),
+              Container(
+                alignment: Alignment.centerLeft,
+                child: DropdownButton<int>(
+                    value: _dropdownvalue, // Initially selected value
+                    onChanged: (int? newValue) {
+                      // Handle dropdown value changes
+                      if (newValue != null) {
+                        setState(() {
+                          _dropdownvalue = newValue!;
+                          print('drop down value ${_dropdownvalue}');
+                        });
+                      }
+                    },
+                    items: dropdownItems.entries.map((MapEntry<int, String> entry) {
+                      return DropdownMenuItem<int>(
+                        value: entry.key,
+                        child: Text(entry.value),
+                      );
+                    }).toList(),
+                  ),
+              ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Common Name'),
                 validator: (value) {
@@ -381,12 +501,28 @@ class _AddPlantPageState extends State<AddPlantPage> {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10), // Rounded corners
-                  child: Image(
-                    image: AssetImage('assets/images/background.png'),
-                    fit: BoxFit.cover, // Adjust the fit as needed
-                  ),
+                  child: ClipRRect(
+                      borderRadius:
+                          BorderRadius.circular(10), // Rounded corners
+                      child: _image == null
+                      ?
+                      TextButton.icon(
+                        onPressed: getImage, 
+                        icon: const Icon(Icons.camera), 
+                        label: const Text('Select Picture'),
+                      )
+                      : kIsWeb?
+                         Image.memory(webImage,fit: BoxFit.fill):
+                         Image.file(_image!,fit: BoxFit.fill,),
+                    ),
+                  // Image(
+                  //   image: AssetImage('assets/images/background.png'),
+                  //   fit: BoxFit.cover, // Adjust the fit as needed
+                  // ),
                 ),
               ),
+              const SizedBox(height: 12),
+              buildText('Category', dropdownItems[_dropdownvalue]!),
               const SizedBox(height: 12),
               buildText('Common Name', _commonName),
               const SizedBox(height: 12),

@@ -8,7 +8,7 @@ class AppConfig {
   static String BffApiKey = '';
   static String refreshToken = '';
   static String choreoSTSEndpoint = "";
-  static String choreoSTSClientID = "Tpq3gnE66p7y1KRqffYi2GDr0Loa";
+  static String choreoSTSClientID = "U8I0GbOwEAJw_oDbGs2VEd8H3F0a";
   static String asgardeoClientId = "ItvJE7jy6eWuGKfosqX08vhpTdAa";
   static String asgardeoTokenEndpoint = "";
   static var apiTokens = null;

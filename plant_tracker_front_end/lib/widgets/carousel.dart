@@ -9,86 +9,122 @@ class MainCarousel extends StatefulWidget {
 }
 
 class _MainCarouselState extends State<MainCarousel> {
-  final String imagePath = 'assets/images/';
+  final List<List<String>> allImages = [
+    [
+      'assets/images/tropical_plants/AGLEIL.jpg',
+      'assets/images/tropical_plants/AGLKRE.jpg',
+      'assets/images/tropical_plants/AGLNIG.jpg',
+      'assets/images/tropical_plants/AGLEIL.jpg',
+      'assets/images/tropical_plants/AGLSIAAUR.jpg',
+      'assets/images/tropical_plants/AGLTOT.jpg',
+    ],
+    [
+       'assets/images/aquatic_plants/rotala_green.jpg',
+      'assets/images/aquatic_plants/rotala-rotundifolia-singapore-blood-red.jpg',
+      'assets/images/aquatic_plants/valisnaria.jpg',
+      'assets/images/aquatic_plants/anubias.jpg',
+      'assets/images/aquatic_plants/java-fern.jpg',
+      'assets/images/aquatic_plants/bucephalandra.jpg',
+    ],
+    [
+      'assets/images/epified_plants/Alamy.jpg',
+      'assets/images/epified_plants/AirPlant.jpg',
+      'assets/images/epified_plants/birdplant.jpg',
+      'assets/images/epified_plants/bromilia.jpg',
+      'assets/images/epified_plants/Britanica.jpg',
+      'assets/images/epified_plants/bucephalandra-pygmaea.jpg',
+    ],
+    [
+       'assets/images/moss/riccardia-chamedryfolia.jpg',
+      'assets/images/moss/Java-moss.jpg',
+      'assets/images/moss/FlameMoss.jpg',
+      'assets/images/moss/Mini_pelia.jpg',
+      'assets/images/moss/Peacock-Moss.jpg',
+      'assets/images/moss/pearl.jpg',
+    ],
+  ];
 
-  final CarouselController _controller = CarouselController();
-
-  List _isHovering = [false, false, false, false, false, false, false];
-  List _isSelected = [true, false, false, false, false, false, false];
-
-  int _current = 0;
-
-  final List<String> images = [
-    'assets/images/asia.jpg',
-    'assets/images/africa.jpg',
-    'assets/images/europe.jpg',
-    'assets/images/south_america.jpg',
-    'assets/images/australia.jpg',
-    'assets/images/antarctica.jpg',
+  final List<List<String>> imageInfo = [
+    ['Aglaonema', 'Kresna', 'Alocasia','Polly', 'Asia Alocasia', 'Philo'],
+    ['Rotala Green', 'Rotala Blood Red', 'Valisnaria Nana', 'Anubias Nana', 'Java Fern', 'Bucephalandra'],
+    ['Alamy', 'Air Plant', 'Bird Nest','Bromilia', 'Britanica', 'Bucephalandra Pygmaea'],
+    ['Riccardia Chamedryfolia', 'Java Moss', 'Flame Moss','Mini Pelia', 'Pearl', 'Asia Moss'],
   ];
 
   final List<String> places = [
-    'ASIA',
-    'AFRICA',
-    'EUROPE',
-    'SOUTH AMERICA',
-    'AUSTRALIA',
-    'ANTARCTICA',
+    'TROPICAL PLANTS',
+    'AQUATIC PLANTS',
+    'EPIFIED PLANTS',
+    'MOSS',
   ];
 
-  List<Widget> generateImageTiles(screenSize) {
-    return images
-        .map(
-          (element) => ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(
-              element,
-              fit: BoxFit.cover,
-            ),
-          ),
-        )
-        .toList();
+  int _current = 0;
+
+  List<Widget> generateImageTiles(int index) {
+    List<Widget> imageTiles = [];
+
+    for (int i = 0; i < allImages[index].length; i += 2) {
+      imageTiles.add(
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            for (int j = i; j < i + 3 && j < allImages[index].length; j++)
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.asset(
+                          allImages[index][j],
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width / 2.5,
+                          height: MediaQuery.of(context).size.height / 3.5,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        imageInfo[index][j],
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Some information about the image...',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      );
+    }
+
+    return imageTiles;
   }
 
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    var imageSliders = generateImageTiles(screenSize);
+    var imageSliders = generateImageTiles(_current);
 
     return Stack(
       children: [
-        CarouselSlider(
-          items: imageSliders,
-          options: CarouselOptions(
-              enlargeCenterPage: true,
-              aspectRatio: 18 / 8,
-              autoPlay: true,
-              onPageChanged: (index, reason) {
-                setState(() {
-                  _current = index;
-                  for (int i = 0; i < imageSliders.length; i++) {
-                    if (i == index) {
-                      _isSelected[i] = true;
-                    } else {
-                      _isSelected[i] = false;
-                    }
-                  }
-                });
-              }),
-          carouselController: _controller,
-        ),
-        AspectRatio(
-          aspectRatio: 18 / 8,
-          child: Center(
-            child: Text(
-              places[_current],
-              style: TextStyle(
-                letterSpacing: 8,
-                fontFamily: 'Electrolize',
-                fontSize: screenSize.width / 25,
-                color: Colors.white,
-              ),
-            ),
+        Container(
+          margin: EdgeInsets.only(
+            top: screenSize.height / 8,
+          ),
+          child: Column(
+            children: imageSliders,
           ),
         ),
         AspectRatio(
@@ -117,52 +153,26 @@ class _MainCarouselState extends State<MainCarousel> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               InkWell(
-                                splashColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                onHover: (value) {
-                                  setState(() {
-                                    value
-                                        ? _isHovering[i] = true
-                                        : _isHovering[i] = false;
-                                  });
-                                },
                                 onTap: () {
-                                  _controller.animateToPage(i);
+                                  setState(() {
+                                    _current = i;
+                                  });
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.only(
-                                      top: screenSize.height / 80,
-                                      bottom: screenSize.height / 90),
+                                    top: screenSize.height / 80,
+                                    bottom: screenSize.height / 90,
+                                  ),
                                   child: Text(
                                     places[i],
                                     style: TextStyle(
-                                      color: _isHovering[i]
+                                      color: _current == i
                                           ? Colors.blueGrey[900]
                                           : Colors.blueGrey,
                                     ),
                                   ),
                                 ),
                               ),
-                              Visibility(
-                                maintainSize: true,
-                                maintainAnimation: true,
-                                maintainState: true,
-                                visible: _isSelected[i],
-                                child: AnimatedOpacity(
-                                  duration: Duration(milliseconds: 400),
-                                  opacity: _isSelected[i] ? 1 : 0,
-                                  child: Container(
-                                    height: 5,
-                                    decoration: BoxDecoration(
-                                      color: Colors.blueGrey,
-                                      borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
-                                      ),
-                                    ),
-                                    width: screenSize.width / 10,
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                       ],
@@ -177,3 +187,4 @@ class _MainCarouselState extends State<MainCarousel> {
     );
   }
 }
+
